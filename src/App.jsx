@@ -1,56 +1,57 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
-import { useState, useEffect } from 'react';
+import {useState,useEffect} from 'react';
+import LoginForm from './LoginForm';
 export default function App() {
-  const [todos, setTodo] = useState([]);
-
-  useEffect(() =>{
-
+  const[todos,setTodo]=useState([]);
+  useEffect(()=>{
     getData();
   },[]);
-
-  const getData =async() =>
-  {
-
-  try{
-    const incomingData =await fetch('https://jsonplaceholder.typicode.com/todos');
-    const formattedData = await incomingData.json();
-    setTodo(formattedData);
-    console.log(formattedData);
-  }
-  catch(error){
-    console.log(error);
-  }
+  const getData=async () =>{
+    try{
+      const incomingData = await fetch(
+        "https://jsonplaceholder.typicode.com/todos"     
+      );
+      const formattedData = await incomingData.json();
+      setTodo(formattedData);
+      console.log(formattedData);
+    }catch(error){
+      console.log(error);
+    }
   };
-  return (
-    <div>
 
-      <Container className=" my-5">
-        <h1 className="my-5 text-container dispaly-2"> TODO LIST</h1>
+  return (
+    <div className='mx-5'>
       
+        <LoginForm/>
+        
+        <Container>
+      <h1 className="my-5 text-center display-2">Todo List</h1>
       <Table striped bordered hover>
-      <thead>
+        <thead>
+          <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>completed</th>
+          </tr>
         </thead>
         <tbody>
-        {todos.map((todo,i)=>(
-          <tr key={todo.i}>
+          {todos.map((todo,i)=>
+          (
+            <tr key={todo.id}>
             <td>{i+1}</td>
-            <td style={{ color: todo.completed ? 'green' : 'red' }}>{todo.title}</td>
-            <td>{todo.completed?"completed":"pending"}</td>
-            <td>
-      {todo.completed ? (
-        <span>&#10003;</span> // Green tick mark for true
-      ) : (
-        <span>&#10005;</span> // Red cross for false
-      )}
-    </td>
-
+            <td style={{color: todo.completed ? 'green' : 'red' }}>{todo.title}</td>
+             
+            
           </tr>
-        ))}
-      </tbody>
-    </Table>
-    </Container>
+
+          ))}
+          
+          
+        </tbody>
+      </Table>
+      </Container>
     </div>
   );
 }
